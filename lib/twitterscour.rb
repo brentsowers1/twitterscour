@@ -8,6 +8,9 @@ class TwitterScour
     main_page =  Nokogiri::HTML(open("http://twitter.com/#{username}"))
     main_page.css('li.status').collect do |tw|
       t = Tweet.new
+      if tw[:class] =~ /.* u\-(.*?) .*/
+        t.author_name = $1
+      end
       t.text = tw.css("span.entry-content").text
       # For some reason, time isn't in quotes in the JSON string which causes problems
       t.time = Time.parse(tw.css("span.timestamp").first[:data].match(/\{time:'(.*)'\}/)[1])
