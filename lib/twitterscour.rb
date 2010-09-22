@@ -1,6 +1,6 @@
 require 'nokogiri'
 require 'open-uri'
-require_relative 'tweet'
+require File.dirname(__FILE__) + "/tweet"
 require 'json'
 
 class TwitterScour
