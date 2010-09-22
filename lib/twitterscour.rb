@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'nokogiri'
-#require 'open-uri'
 require 'httparty'
 require File.dirname(__FILE__) + "/tweet"
 require 'json'
@@ -23,6 +22,12 @@ class TwitterScour
         meta_data = JSON.parse(meta_data_str)
         t.author_pic = meta_data["avatar_url"]
         place_id = meta_data["place_id"]
+        token = main_page.css("input#authenticity_token").first[:value]
+        if place_id
+          geo_data_str = HTTParty.get("http://twitter.com/1/geo/id/#{place_id}.json?authenticity_token=#{token}&twttr=true")
+          geo_data = geo_data_str.to_json
+          t.location = geo_data
+        end
       end
       t
     end
