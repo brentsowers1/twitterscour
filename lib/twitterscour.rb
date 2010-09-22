@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'nokogiri'
 require 'open-uri'
 require File.dirname(__FILE__) + "/tweet"
