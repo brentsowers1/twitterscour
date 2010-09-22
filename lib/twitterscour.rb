@@ -1,12 +1,15 @@
 require 'rubygems'
 require 'nokogiri'
-require 'open-uri'
+#require 'open-uri'
+require 'httparty'
 require File.dirname(__FILE__) + "/tweet"
 require 'json'
 
 class TwitterScour
   def self.from_user(username, number_of_pages=1, fetch_location_info=false)
-    main_page =  Nokogiri::HTML(open("http://twitter.com/#{username}"))
+    rsp = HTTParty.get("http://twitter.com/#{username}")
+    raise Exception.new("Error code returned from Twitter - #{rsp.code}") if rsp.code != 200
+    main_page =  Nokogiri::HTML(rsp.body)
     main_page.css('li.status').collect do |tw|
       t = Tweet.new
       if tw[:class] =~ /.* u\-(.*?) .*/
