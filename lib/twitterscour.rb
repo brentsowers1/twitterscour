@@ -2,6 +2,7 @@ require 'rubygems'
 require 'nokogiri'
 require 'httparty'
 require File.dirname(__FILE__) + "/tweet"
+require File.dirname(__FILE__) + "/tweet_location"
 require 'json'
 
 class TwitterScour
@@ -23,10 +24,19 @@ class TwitterScour
         t.author_pic = meta_data["avatar_url"]
         place_id = meta_data["place_id"]
         token = main_page.css("input#authenticity_token").first[:value]
-        if place_id
-          geo_data_str = HTTParty.get("http://twitter.com/1/geo/id/#{place_id}.json?authenticity_token=#{token}&twttr=true")
-          geo_data = geo_data_str.to_json
-          t.location = geo_data
+        if place_id && fetch_location_info
+          geo_data_str = HTTParty.get("http://twitter.com/1/geo/id/#{place_id}.json?authenticity_token=#{token}&twttr=true").body
+          geo_data = JSON.parse(geo_data_str)
+          if geo_data["geometry"] && geo_data["geometry"]["coordinates"]
+            loc = TweetLocation.new
+            loc.place_name = geo_data["name"]
+            if geo_data["geometry"]["type"] == "Point"
+              loc.center = geo_data["geometry"]["coordinates"]
+            elsif geo_data["geometry"]["type"] == "Polygon"
+              loc.bounding_box = geo_data["geometry"]["coordinates"].first
+            end
+            t.location = loc
+          end
         end
       end
       t
