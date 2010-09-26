@@ -6,10 +6,19 @@ require File.dirname(__FILE__) + "/tweet_location"
 require 'json'
 
 class TwitterScour
+  # Currently, this is the number of tweets per page of results
   TWEETS_PER_PAGE = 20
 
+  # Retrieves all tweets from the passed in username (no @ symbol)
+  # - number_of_pages - By default, only up to 20 tweets (first page) will be
+  #                     returned.  Specify more than one page here if you want
+  #                     more than 20
+  # - fetch_location_info - By default, the location info will not be included,
+  #                         because to retrieve location info takes another
+  #                         HTTP request which can slow things down.  If you
+  #                         want location set this to true
   def self.from_user(username, number_of_pages=1, fetch_location_info=false)
-    rsp = HTTParty.get("http://twitter.com/#{username}")
+    rsp = HTTParty.get("http://twitter.com/#{username.gsub(/@/, "")}")
     raise Exception.new("Error code returned from Twitter - #{rsp.code}") if rsp.code != 200
     locations = {}
     cur_page = 1
@@ -51,6 +60,8 @@ class TwitterScour
                     loc.center = geo_data["geometry"]["coordinates"]
                   elsif geo_data["geometry"]["type"] == "Polygon"
                     loc.bounding_box = geo_data["geometry"]["coordinates"].first
+                    ll_sums = loc.bounding_box.inject([0,0]) {|sum, p| [sum[0] + p[0], sum[1] + p[1]]}
+                    loc.center = [ll_sums[0] / loc.bounding_box.length, ll_sums[1] / loc.bounding_box.length]
                   end
                   t.location = loc
                   locations[place_id] = loc
@@ -72,7 +83,10 @@ class TwitterScour
         rsp = HTTParty.get("http://twitter.com/#{next_link}")
         pagination_html = rsp.body
         tweets_html = rsp.body
-#        if rsp.code == 200 #&& rsp.body =~ /^\{.*/
+        # I can't figure out how to get the response to come back as JSON.  When I go to the URL,
+        # I get a full page back.  When I snoop on the net traffic for the same URL in Firebug, the
+        # response is JSON with just the new tweets
+#        if rsp.code == 200 && rsp.body =~ /^\{.*/
 #          result = JSON.parse(rsp.body)
 #          pagination_html = result["#pagination"]
 #          tweets_html = result["#timeline"]
