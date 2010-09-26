@@ -65,13 +65,18 @@ class TwitterScour
       cur_page += 1
       if new_tweets.length == TWEETS_PER_PAGE && cur_page <= number_of_pages
         pagination = Nokogiri::HTML(pagination_html)
-        next_link = pagination.css("a#next").first[:href]
-        rsp = HTTParty.get("http://twitter.com/#{next_link}")
-        if rsp.code == 200 && rsp.body =~ /^\{.*/
-          result = JSON.parse(rsp.body)
-          pagination_html = result["#pagination"]
-          tweets_html = result["#timeline"]
+        next_link = pagination.css("a#more").first[:href]
+        unless next_link.include?("authenticity_token=")
+          next_link << "&authenticity_token=#{authenticity_token}"
         end
+        rsp = HTTParty.get("http://twitter.com/#{next_link}")
+        pagination_html = rsp.body
+        tweets_html = rsp.body
+#        if rsp.code == 200 #&& rsp.body =~ /^\{.*/
+#          result = JSON.parse(rsp.body)
+#          pagination_html = result["#pagination"]
+#          tweets_html = result["#timeline"]
+#        end
       else
         break
       end
