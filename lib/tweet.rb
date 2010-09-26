@@ -4,5 +4,7 @@ class Tweet
   attr_accessor :text
   attr_accessor :location
   attr_accessor :time
+
+  attr_accessor :place_id
 end
 

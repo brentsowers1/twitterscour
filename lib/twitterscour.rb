@@ -10,6 +10,9 @@ class TwitterScour
     rsp = HTTParty.get("http://twitter.com/#{username}")
     raise Exception.new("Error code returned from Twitter - #{rsp.code}") if rsp.code != 200
     main_page =  Nokogiri::HTML(rsp.body)
+
+    locations = {}
+
     main_page.css('li.status').collect do |tw|
       t = Tweet.new
       if tw[:class] =~ /.* u\-(.*?) .*/
@@ -23,19 +26,28 @@ class TwitterScour
         meta_data = JSON.parse(meta_data_str)
         t.author_pic = meta_data["avatar_url"]
         place_id = meta_data["place_id"]
+        t.place_id = place_id
         token = main_page.css("input#authenticity_token").first[:value]
         if place_id && fetch_location_info
-          geo_data_str = HTTParty.get("http://twitter.com/1/geo/id/#{place_id}.json?authenticity_token=#{token}&twttr=true").body
-          geo_data = JSON.parse(geo_data_str)
-          if geo_data["geometry"] && geo_data["geometry"]["coordinates"]
-            loc = TweetLocation.new
-            loc.place_name = geo_data["name"]
-            if geo_data["geometry"]["type"] == "Point"
-              loc.center = geo_data["geometry"]["coordinates"]
-            elsif geo_data["geometry"]["type"] == "Polygon"
-              loc.bounding_box = geo_data["geometry"]["coordinates"].first
+          if locations[place_id]
+            t.location = locations[place_id]
+          else
+            geo_result = HTTParty.get("http://twitter.com/1/geo/id/#{place_id}.json?authenticity_token=#{token}&twttr=true")
+            if geo_result && geo_result.code == 200 && geo_result.body &&
+               geo_result.body =~ /^\{.*/
+              geo_data = JSON.parse(geo_result.body)
+              if geo_data["geometry"] && geo_data["geometry"]["coordinates"]
+                loc = TweetLocation.new
+                loc.place_name = geo_data["name"]
+                if geo_data["geometry"]["type"] == "Point"
+                  loc.center = geo_data["geometry"]["coordinates"]
+                elsif geo_data["geometry"]["type"] == "Polygon"
+                  loc.bounding_box = geo_data["geometry"]["coordinates"].first
+                end
+                t.location = loc
+                locations[place_id] = loc
+              end
             end
-            t.location = loc
           end
         end
       end
