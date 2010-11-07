@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>File: README [RDoc Documentation]</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }<\/style>" )
+
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+  <div id="fileHeader">
+    <h1>README</h1>
+    <table class="header-table">
+    <tr class="top-aligned-row">
+      <td><strong>Path:</strong></td>
+      <td>README
+
+      </td>
+    </tr>
+    <tr class="top-aligned-row">
+      <td><strong>Last Update:</strong></td>
+      <td>2010-11-07 14:55:43 -0500</td>
+    </tr>
+    </table>
+  </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+  <div id="contextContent">
+
+    <div id="description">
+      <h1>twitterscour gem</h1>
+<p>
+This gem is on Gemcutter, simply type &#8220;gem install
+twitterscour&#8221; to install it.
+</p>
+<p>
+Code is available on github at <a
+href="http://github.com/brentsowers1/twitterscour">github.com/brentsowers1/twitterscour</a>
+</p>
+<p>
+Class for retrieving lists of tweets directly from the Twitter web page,
+not through the API. The API that other twitter gems use provides limited
+results, this returns all tweets that you can see if you go to the web page
+direclty. <a href="../classes/TwitterScour.html">TwitterScour</a> is the
+main class to use. There is no need to instantiate it, two class methods
+are provided to search for tweets. These will return an array of <a
+href="../classes/Tweet.html">Tweet</a> objects.
+</p>
+<p>
+Note that this gem needs the gems HTTParty and Nokogiri. HTTParty should
+install without any trouble when you install this. For Nokogiri, follow the
+instructions here to install: <a
+href="http://nokogiri.org/tutorials/installing_nokogiri.html">nokogiri.org/tutorials/installing_nokogiri.html</a>
+</p>
+<h2>Examples:</h2>
+<p>
+Get the 40 most recent tweets from me (@sowersb), with location info on all
+tweets:
+</p>
+<pre>
+  require 'twitterscour'
+  brent_tweets = TwitterScour.from_user('sowersb', 2, true)
+</pre>
+<p>
+Get the 60 most recent tweets with the term Ruby in the tweet.
+</p>
+<pre>
+  require 'twitterscour'
+  ruby_tweets = TwitterScour.search_term('Ruby', 3)
+</pre>
+<table>
+<tr><td valign="top">Author:</td><td>Brent Sowers (<a
+href="mailto:brent@coordinatecommons.com">brent@coordinatecommons.com</a>)
+
+</td></tr>
+<tr><td valign="top">License:</td><td>You&#8217;re free to do whatever you want with this
+
+</td></tr>
+</table>
+
+    </div>
+
+   </div>
+
+
+  </div>
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+    <!-- if method_list -->
+
+
+
+
+  </div>
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

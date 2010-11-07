@@ -1,3 +1,31 @@
-DEVELOPMENT IN PROGRESS
+= twitterscour gem
 
-This is not ready for use yet, I've just started development
+This gem is on Gemcutter, simply type "gem install twitterscour" to install it.
+
+Code is available on github at http://github.com/brentsowers1/twitterscour
+
+Class for retrieving lists of tweets directly from the Twitter web page, not
+through the API.  The API that other twitter gems use provides limited results,
+this returns all tweets that you can see if you go to the web page direclty.
+TwitterScour is the main class to use.  There is no need to instantiate it,
+two class methods are provided to search for tweets.  These will return an
+array of Tweet objects.
+
+Note that this gem needs the gems HTTParty and Nokogiri.  HTTParty should
+install without any trouble when you install this.  For Nokogiri, follow
+the instructions here to install:
+http://nokogiri.org/tutorials/installing_nokogiri.html
+
+== Examples:
+
+Get the 40 most recent tweets from me (@sowersb), with location info on all
+tweets:
+  require 'twitterscour'
+  brent_tweets = TwitterScour.from_user('sowersb', 2, true)
+
+Get the 60 most recent tweets with the term Ruby in the tweet.
+  require 'twitterscour'
+  ruby_tweets = TwitterScour.search_term('Ruby', 3)
+
+Author:: Brent Sowers (mailto:brent@coordinatecommons.com)
+License:: You're free to do whatever you want with this

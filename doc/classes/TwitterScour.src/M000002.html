@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>search_term (TwitterScour)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/twitterscour.rb, line 104</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">search_term</span>(<span class="ruby-identifier">search_term</span>, <span class="ruby-identifier">number_of_pages</span>=<span class="ruby-value">1</span>)
+    <span class="ruby-identifier">search_url</span> = <span class="ruby-node">&quot;http://integratedsearch.twitter.com/search.html?_=#{Time.now.utc.to_i}000&amp;q=#{search_term.gsub(/#/, &quot;%23&quot;)}&amp;rpp=20&amp;maxId=null&amp;locale=en&amp;callback=processHomepageSearch&amp;layout=none&quot;</span>
+    <span class="ruby-identifier">rsp</span> = <span class="ruby-constant">HTTParty</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">search_url</span>, <span class="ruby-identifier">:format</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:html</span>)
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;Error code returned from Twitter - #{rsp.code}&quot;</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">rsp</span>.<span class="ruby-identifier">code</span> <span class="ruby-operator">!=</span> <span class="ruby-value">200</span>
+    <span class="ruby-identifier">cur_page</span> = <span class="ruby-value">1</span>
+    <span class="ruby-identifier">tweets</span> = []
+    <span class="ruby-identifier">tweets_html</span> = <span class="ruby-value str">&quot;&quot;</span>
+
+    <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">rsp</span>.<span class="ruby-identifier">code</span> <span class="ruby-operator">==</span> <span class="ruby-value">200</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">rsp</span>.<span class="ruby-identifier">body</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/^processHomepageSearch\(&quot;(.*)&quot;\)$/</span>
+        <span class="ruby-identifier">tweets_html</span> = <span class="ruby-identifier">$1</span>
+        <span class="ruby-comment cmt"># These escape sequences are used because Javascript is sent back, we</span>
+        <span class="ruby-comment cmt"># want to interpret it as HTML so get rid of them</span>
+        <span class="ruby-identifier">tweets_html</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp re">/\\&quot;/</span>, <span class="ruby-value str">&quot;\&quot;&quot;</span>)
+        <span class="ruby-identifier">tweets_html</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp re">/\\t/</span>, <span class="ruby-value str">&quot;&quot;</span>)
+        <span class="ruby-identifier">tweets_html</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp re">/\\r/</span>, <span class="ruby-value str">&quot;&quot;</span>)
+        <span class="ruby-identifier">tweets_html</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp re">/\\n/</span>, <span class="ruby-value str">&quot;&quot;</span>)
+      <span class="ruby-keyword kw">else</span>
+        <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;Search results did not meet the expected format - #{rsp.body}&quot;</span>)
+      <span class="ruby-keyword kw">end</span>
+
+      <span class="ruby-identifier">page_body</span> =  <span class="ruby-constant">Nokogiri</span><span class="ruby-operator">::</span><span class="ruby-constant">HTML</span>(<span class="ruby-identifier">tweets_html</span>)
+      <span class="ruby-identifier">new_tweets</span> = <span class="ruby-identifier">page_body</span>.<span class="ruby-identifier">css</span>(<span class="ruby-value str">'li.result'</span>).<span class="ruby-identifier">collect</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tw</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">t</span> = <span class="ruby-constant">Tweet</span>.<span class="ruby-identifier">new</span>
+        <span class="ruby-identifier">t</span>.<span class="ruby-identifier">author_name</span> = <span class="ruby-identifier">tw</span>.<span class="ruby-identifier">css</span>(<span class="ruby-value str">&quot;a.username&quot;</span>).<span class="ruby-identifier">first</span>.<span class="ruby-identifier">text</span>
+        <span class="ruby-identifier">t</span>.<span class="ruby-identifier">author_pic</span> = <span class="ruby-identifier">tw</span>.<span class="ruby-identifier">css</span>(<span class="ruby-value str">&quot;div.avatar img&quot;</span>).<span class="ruby-identifier">first</span>[<span class="ruby-identifier">:src</span>]
+        <span class="ruby-identifier">t</span>.<span class="ruby-identifier">text</span> = <span class="ruby-identifier">tw</span>.<span class="ruby-identifier">css</span>(<span class="ruby-value str">&quot;span.msgtxt&quot;</span>).<span class="ruby-identifier">text</span>
+        <span class="ruby-identifier">time_text</span> = <span class="ruby-identifier">tw</span>.<span class="ruby-identifier">css</span>(<span class="ruby-value str">&quot;div.info&quot;</span>).<span class="ruby-identifier">text</span>
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">time_text</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/(about )?(\d+) (minute(s?)|hour(s?)|day(s?)) ago/</span>
+          <span class="ruby-identifier">num</span> = <span class="ruby-identifier">$2</span>.<span class="ruby-identifier">to_i</span>
+          <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">$3</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value str">&quot;hour&quot;</span>)
+            <span class="ruby-identifier">num</span> <span class="ruby-operator">*=</span> <span class="ruby-value">60</span>
+          <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">$3</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value str">&quot;day&quot;</span>)
+            <span class="ruby-identifier">num</span> <span class="ruby-operator">*=</span> <span class="ruby-value">1440</span>
+          <span class="ruby-keyword kw">end</span>
+          <span class="ruby-identifier">num</span> <span class="ruby-operator">*=</span> <span class="ruby-value">60</span>  <span class="ruby-comment cmt"># 60 seconds in a minute</span>
+          <span class="ruby-identifier">t</span>.<span class="ruby-identifier">time</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">num</span>
+        <span class="ruby-keyword kw">end</span>
+        <span class="ruby-identifier">t</span>
+      <span class="ruby-keyword kw">end</span>
+      <span class="ruby-identifier">tweets</span> = <span class="ruby-identifier">tweets</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-identifier">new_tweets</span>)
+      <span class="ruby-identifier">cur_page</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">new_tweets</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TWEETS_PER_PAGE</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">cur_page</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-identifier">number_of_pages</span>
+        <span class="ruby-identifier">url</span> = <span class="ruby-identifier">search_url</span> <span class="ruby-operator">+</span> <span class="ruby-node">&quot;&amp;page=#{cur_page}&quot;</span>
+        <span class="ruby-identifier">rsp</span> = <span class="ruby-constant">HTTParty</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">url</span>, <span class="ruby-identifier">:format</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:html</span>)
+      <span class="ruby-keyword kw">else</span>
+        <span class="ruby-keyword kw">break</span>
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span>
+    <span class="ruby-identifier">tweets</span>
+
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

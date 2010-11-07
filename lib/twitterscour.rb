@@ -5,6 +5,8 @@ require File.dirname(__FILE__) + "/tweet"
 require File.dirname(__FILE__) + "/tweet_location"
 require 'json'
 
+# Fetches Tweet objects from twitter.com based on the parameters that you
+# specify for your search
 class TwitterScour
   # Currently, this is the number of tweets per page of results
   TWEETS_PER_PAGE = 20
