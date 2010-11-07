@@ -4,6 +4,7 @@ require 'httparty'
 require File.dirname(__FILE__) + "/tweet"
 require File.dirname(__FILE__) + "/tweet_location"
 require 'json'
+require 'cgi'
 
 # Fetches Tweet objects from twitter.com based on the parameters that you
 # specify for your search
@@ -102,7 +103,8 @@ class TwitterScour
   # Note that tweets from a search will NOT have location info.  The only way
   # to get this is to do a from user search.
   def self.search_term(search_term, number_of_pages=1)
-    search_url = "http://integratedsearch.twitter.com/search.html?_=#{Time.now.utc.to_i}000&q=#{search_term.gsub(/#/, "%23")}&rpp=20&maxId=null&locale=en&callback=processHomepageSearch&layout=none"
+    term = CGI.escape(search_term)
+    search_url = "http://integratedsearch.twitter.com/search.html?_=#{Time.now.utc.to_i}000&q=#{term}&rpp=20&maxId=null&locale=en&callback=processHomepageSearch&layout=none"
     rsp = HTTParty.get(search_url, :format => :html)
     raise Exception.new("Error code returned from Twitter - #{rsp.code}") if rsp.code != 200
     cur_page = 1
