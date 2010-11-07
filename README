@@ -11,9 +11,9 @@ TwitterScour is the main class to use.  There is no need to instantiate it,
 two class methods are provided to search for tweets.  These will return an
 array of Tweet objects.
 
-Note that this gem needs the gems HTTParty and Nokogiri.  HTTParty should
+Note that this gem needs the gems HTTParty, Nokogiri, and json_pure.  HTTParty should
 install without any trouble when you install this.  For Nokogiri, follow
-the instructions here to install:
+the instructions here to install if you get an error:
 http://nokogiri.org/tutorials/installing_nokogiri.html
 
 == Examples:
