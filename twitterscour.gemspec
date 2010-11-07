@@ -14,4 +14,5 @@ Gem::Specification.new do |spec|
   spec.has_rdoc          = true
   spec.add_dependency('httparty')
   spec.add_dependency('nokogiri')
+  spec.add_dependency('json_pure')
 end
