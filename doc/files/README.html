@@ -53,7 +53,7 @@
     </tr>
     <tr class="top-aligned-row">
       <td><strong>Last Update:</strong></td>
-      <td>2010-11-07 14:55:43 -0500</td>
+      <td>2010-11-08 10:53:57 -0500</td>
     </tr>
     </table>
   </div>
@@ -75,17 +75,26 @@ href="http://github.com/brentsowers1/twitterscour">github.com/brentsowers1/twitt
 </p>
 <p>
 Class for retrieving lists of tweets directly from the Twitter web page,
-not through the API. The API that other twitter gems use provides limited
-results, this returns all tweets that you can see if you go to the web page
-direclty. <a href="../classes/TwitterScour.html">TwitterScour</a> is the
-main class to use. There is no need to instantiate it, two class methods
-are provided to search for tweets. These will return an array of <a
-href="../classes/Tweet.html">Tweet</a> objects.
+not through the API. The API that other twitter gems use returns only what
+Twitter considers the &#8220;most popular&#8221; tweets in many cases, this
+returns all tweets that you can see if you go to the web page directly. <a
+href="../classes/TwitterScour.html">TwitterScour</a> is the main class to
+use. There is no need to instantiate it, two class methods are provided to
+search for tweets. These will return an array of <a
+href="../classes/Tweet.html">Tweet</a> objects. Location info can be
+retrieved on tweets searched for by user name as well.
 </p>
 <p>
-Note that this gem needs the gems HTTParty and Nokogiri. HTTParty should
-install without any trouble when you install this. For Nokogiri, follow the
-instructions here to install: <a
+WARNING - this gem should probably not be relied upon for a production
+system. Because it uses the structure of the Twitter web pages as they are
+now, it could break if Twitter changes the structure of their web page.
+Unlike the API, Twitter makes no guarantees of consistency for their web
+pages.
+</p>
+<p>
+Note that this gem needs the gems HTTParty, Nokogiri, and json_pure.
+HTTParty should install without any trouble when you install this. For
+Nokogiri, follow the instructions here to install if you get an error: <a
 href="http://nokogiri.org/tutorials/installing_nokogiri.html">nokogiri.org/tutorials/installing_nokogiri.html</a>
 </p>
 <h2>Examples:</h2>
@@ -113,6 +122,10 @@ href="mailto:brent@coordinatecommons.com">brent@coordinatecommons.com</a>)
 
 </td></tr>
 </table>
+<p>
+See more gems by me, my blog posts, etc. at <a
+href="http://coordinatecommons.com.">coordinatecommons.com.</a>
+</p>
 
     </div>
 

@@ -7,9 +7,10 @@
   <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File lib/twitterscour.rb, line 104</span>
+  <pre><span class="ruby-comment cmt"># File lib/twitterscour.rb, line 108</span>
   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">search_term</span>(<span class="ruby-identifier">search_term</span>, <span class="ruby-identifier">number_of_pages</span>=<span class="ruby-value">1</span>)
-    <span class="ruby-identifier">search_url</span> = <span class="ruby-node">&quot;http://integratedsearch.twitter.com/search.html?_=#{Time.now.utc.to_i}000&amp;q=#{search_term.gsub(/#/, &quot;%23&quot;)}&amp;rpp=20&amp;maxId=null&amp;locale=en&amp;callback=processHomepageSearch&amp;layout=none&quot;</span>
+    <span class="ruby-identifier">term</span> = <span class="ruby-constant">CGI</span>.<span class="ruby-identifier">escape</span>(<span class="ruby-identifier">search_term</span>)
+    <span class="ruby-identifier">search_url</span> = <span class="ruby-node">&quot;http://integratedsearch.twitter.com/search.html?_=#{Time.now.utc.to_i}000&amp;q=#{term}&amp;rpp=20&amp;maxId=null&amp;locale=en&amp;callback=processHomepageSearch&amp;layout=none&quot;</span>
     <span class="ruby-identifier">rsp</span> = <span class="ruby-constant">HTTParty</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">search_url</span>, <span class="ruby-identifier">:format</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:html</span>)
     <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;Error code returned from Twitter - #{rsp.code}&quot;</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">rsp</span>.<span class="ruby-identifier">code</span> <span class="ruby-operator">!=</span> <span class="ruby-value">200</span>
     <span class="ruby-identifier">cur_page</span> = <span class="ruby-value">1</span>
