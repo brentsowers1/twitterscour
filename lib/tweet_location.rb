@@ -1,3 +1,4 @@
+# Class representing the location of a tweet.
 class TweetLocation
   # Text name for the location
   attr_accessor :place_name

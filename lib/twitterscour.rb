@@ -12,16 +12,16 @@ class TwitterScour
   # Currently, this is the number of tweets per page of results
   TWEETS_PER_PAGE = 20
 
-  # Retrieves all tweets from the passed in username (no @ symbol)
+  # Retrieves all tweets from the passed in username.  An array of Tweet objects
+  # is returned.
+  # - username - Twitter username to search from.  No @ symbol is necessary.
   # - number_of_pages - By default, only up to 20 tweets (first page) will be
-  #                     returned.  Specify more than one page here if you want
-  #                     more than 20.  note that each page is a separate HTTP
-  #                     request, so the higher the number of pages, the longer
-  #                     the operation will take.
+  #   returned.  Specify more than one page here if you want more than 20.  Note
+  #   that each page is a separate HTTP request, so the higher the number of
+  #   pages, the longer the operation will take.
   # - fetch_location_info - By default, the location info will not be included,
-  #                         because to retrieve location info takes another
-  #                         HTTP request which can slow things down.  If you
-  #                         want location set this to true
+  #   because to retrieve location info takes another HTTP request which can
+  #   slow things down.  If you want location set this to true
   def self.from_user(username, number_of_pages=1, fetch_location_info=false)
     rsp = HTTParty.get("http://twitter.com/#{username.gsub(/@/, "")}")
     raise Exception.new("Error code returned from Twitter - #{rsp.code}") if rsp.code != 200
@@ -95,11 +95,14 @@ class TwitterScour
     tweets
   end
 
-  # Returns the most recent tweets that contain the search term passed in.  For
-  # a hashtag search just send the hashtag in as the search term.  The default
-  # is to return up to 20 results, if you want more, pass in a higher number of
-  # pages.  Note that each page is a separate HTTP request, so the higher this
-  # number, the longer the operation will take.
+  # Returns the most recent tweets that contain the search term passed in.  An
+  # array of Tweet objects is returned.
+  # - search_term - The term to search for.  For a hashtag search, just pass
+  #   in the whole search including the hash symbol.
+  # - number_of_pages - By default, only up to 20 tweets (first page) will be
+  #   returned.  Specify more than one page here if you want more than 20.  Note
+  #   that each page is a separate HTTP request, so the higher the number of
+  #   pages, the longer the operation will take.
   # Note that tweets from a search will NOT have location info.  The only way
   # to get this is to do a from user search.
   def self.search_term(search_term, number_of_pages=1)
