@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>File: README [RDoc Documentation]</title>
+
+  <link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet" />
+
+  <script src="./js/jquery.js" type="text/javascript"
+    charset="utf-8"></script>
+  <script src="./js/thickbox-compressed.js" type="text/javascript"
+    charset="utf-8"></script>
+  <script src="./js/quicksearch.js" type="text/javascript"
+    charset="utf-8"></script>
+  <script src="./js/darkfish.js" type="text/javascript"
+    charset="utf-8"></script>
+</head>
+
+<body class="file">
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="./index.html">Home</a>
+          <a href="./index.html#classes">Classes</a>
+          <a href="./index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Files</h3>
+        <ul>
+        
+          <li class="file"><a href="./History_txt.html">History.txt</a></li>
+        
+          <li class="file"><a href="./README.html">README</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class Index
+          <span class="search-toggle"><img src="./images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="./Tweet.html">Tweet</a></li>
+        
+          <li><a href="./TweetLocation.html">TweetLocation</a></li>
+        
+          <li><a href="./TwitterScour.html">TwitterScour</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    
+<h1>twitterscour gem</h1>
+
+<p>This gem is on Gemcutter, simply type “gem install twitterscour” to install
+it.</p>
+
+<p>Code is available on github at <a
+href="http://github.com/brentsowers1/twitterscour">github.com/brentsowers1/twitterscour</a></p>
+
+<p>Class for retrieving lists of tweets.  For user tweet searches, this gem
+uses the actual Twitter web pages rather than the API.  The API that other
+twitter gems use returns only what Twitter considers the “most popular”
+tweets in many cases, this returns all tweets that you can see if you go to
+the web page directly.  <a href="TwitterScour.html">TwitterScour</a> is the
+main class to use.  There is no need to instantiate it, two class methods
+are provided to search for tweets.  These will return an array of <a
+href="Tweet.html">Tweet</a> objects.  Location info can be retrieved on
+tweets as well.</p>
+
+<p>WARNING - the user tweet search capability should probably not be relied
+upon for a production system.  Because it uses the structure of the Twitter
+web pages as they are now, it could break if Twitter changes the structure
+of their web page.  Unlike the API, which the search term search uses,
+Twitter makes no guarantees of consistency for their web pages.</p>
+
+<p>Note that this gem needs the gems HTTParty, Nokogiri, and json_pure. 
+HTTParty should install without any trouble when you install this.  For
+Nokogiri, follow the instructions here to install if you get an error: <a
+href="http://nokogiri.org/tutorials/installing_nokogiri.html">nokogiri.org/tutorials/installing_nokogiri.html</a></p>
+
+<h2>Examples:</h2>
+
+<p>Get the 40 most recent tweets from me (@sowersb), with location info on all
+tweets:</p>
+
+<pre>require 'twitterscour'
+brent_tweets = TwitterScour.from_user('sowersb', 2, true)</pre>
+
+<p>Get the 45 most recent tweets with the term Ruby in the tweet.</p>
+
+<pre>require 'twitterscour'
+ruby_tweets = TwitterScour.search_term('Ruby', 3)</pre>
+<table class="rdoc-list"><tr><td class="rdoc-term"><p>Author</p></td>
+<td>
+<p>Brent Sowers (<a
+href="mailto:brent@coordinatecommons.com">brent@coordinatecommons.com</a>)</p>
+</td></tr><tr><td class="rdoc-term"><p>License</p></td>
+<td>
+<p>You’re free to do whatever you want with this</p>
+</td></tr></table>
+
+<p>To post comments about this gem, visit my blog post at <a
+href="http://rails.brentsowers.com/2010/11/new-twitterscour-gem.html">rails.brentsowers.com/2010/11/new-twitterscour-gem.html</a></p>
+
+<p>See more gems by me, my blog posts, etc. at <a
+href="http://coordinatecommons.com.">coordinatecommons.com.</a></p>
+
+  </div>
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+</body>
+</html>
+

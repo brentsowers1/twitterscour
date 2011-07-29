@@ -51,7 +51,7 @@ class TwitterScourTest < Test::Unit::TestCase #:nodoc: all
   end
 
   def test_get_search_tweets_success
-    test_data = File.read(File.dirname(__FILE__) + "/fixtures/search_page_1.html")
+    test_data = File.read(File.dirname(__FILE__) + "/fixtures/search.json")
     MockHttpResponse.any_instance.stubs(:body).returns(test_data)
     MockHttpResponse.any_instance.stubs(:code).returns(200)
     HTTParty.expects(:get).twice.returns(MockHttpResponse.new)
@@ -60,13 +60,14 @@ class TwitterScourTest < Test::Unit::TestCase #:nodoc: all
       tweets = TwitterScour.search_term('#Ruby', 2)
     end
     assert_not_nil tweets
-    assert_equal 40, tweets.length
-    [tweets[1], tweets[21]].each do |t|
-      assert_equal "RT @senaduka: python vs. ruby konacno u filmu  ... :) (Python je zmija koja napada mali americki grad Ruby) :) #ruby wins ! http://icio.us/vk1b3r", t.text
-      assert_equal "neximuss", t.author_name
-      assert_equal "http://a0.twimg.com/profile_images/1127468948/80x80_normal.jpg", t.author_pic
-      # Time is difficult to test for search terms, it's not an absolute time
-      # like user searches
+    assert_equal 30, tweets.length
+    [tweets[3], tweets[18]].each do |t|
+      assert_equal "Senior Ruby Developer at Zooppa. Seattle, USA http://goo.gl/fb/OjiZC #ruby", t.text
+      assert_equal "JobMotel_Ruby", t.author_name
+      assert_equal "http://a3.twimg.com/profile_images/66481318/logos_jobmotel3._normal.jpg", t.author_pic
+      assert_equal Time.parse("Fri, 29 Jul 2011 01:31:43 +0000"), t.time
+      assert_not_nil t.location
+      assert_equal [-3.180498, 51.481307], t.location.center
     end
   end
 

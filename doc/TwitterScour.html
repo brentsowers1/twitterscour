@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Class: TwitterScour</title>
+
+  <link rel="stylesheet" href="./rdoc.css" type="text/css" media="screen" />
+
+  <script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="class">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="./index.html">Home</a>
+          <a href="./index.html#classes">Classes</a>
+          <a href="./index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="./lib/twitterscour_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="lib/twitterscour.rb">lib/twitterscour.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+      <!-- Parent Class -->
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        
+        <p class="link">Object</p>
+        
+      </div>
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-from_user">::from_user</a></li>
+          
+          <li><a href="#method-c-search_term">::search_term</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Files</h3>
+        <ul>
+        
+          <li class="file"><a href="./History_txt.html">History.txt</a></li>
+        
+          <li class="file"><a href="./README.html">README</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="./images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="./Tweet.html">Tweet</a></li>
+        
+          <li><a href="./TweetLocation.html">TweetLocation</a></li>
+        
+          <li><a href="./TwitterScour.html">TwitterScour</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="class">TwitterScour</h1>
+
+    <div id="description" class="description">
+      
+<p>Fetches <a href="Tweet.html">Tweet</a> objects from twitter.com based on
+the parameters that you specify for your search</p>
+
+    </div><!-- description -->
+
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+      <!-- Constants -->
+      <div id="constants-list" class="section">
+        <h3 class="section-header">Constants</h3>
+        <dl>
+        
+          <dt><a name="TWEETS_PER_PAGE">TWEETS_PER_PAGE</a></dt>
+          
+          <dd class="description"><p>Currently, this is the number of tweets per page of results</p></dd>
+          
+        
+        </dl>
+      </div>
+      
+
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="from_user-method" class="method-detail ">
+          <a name="method-c-from_user"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">from_user</span><span
+              class="method-args">(username, number_of_pages=1, fetch_location_info=false)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Retrieves all tweets from the passed in username.  An array of <a
+href="Tweet.html">Tweet</a> objects is returned.</p>
+<ul><li>
+<p>username - Twitter username to search from.  No @ symbol is necessary.</p>
+</li><li>
+<p>number_of_pages - By default, only up to 20 tweets (first page) will be
+returned.  Specify more than one page here if you want more than 20.  Note
+that each page is a separate HTTP request, so the higher the number of
+pages, the longer the operation will take.</p>
+</li><li>
+<p>fetch_location_info - By default, the location info will not be included,
+because to retrieve location info takes another HTTP request which can slow
+things down.  If you want location set this to true</p>
+</li></ul>
+            
+
+            
+            <div class="method-source-code" id="from_user-source">
+<pre>
+<span class="ruby-comment"># File lib/twitterscour.rb, line 26</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">from_user</span>(<span class="ruby-identifier">username</span>, <span class="ruby-identifier">number_of_pages</span>=<span class="ruby-value">1</span>, <span class="ruby-identifier">fetch_location_info</span>=<span class="ruby-keyword">false</span>)
+  <span class="ruby-identifier">rsp</span> = <span class="ruby-constant">HTTParty</span>.<span class="ruby-identifier">get</span>(<span class="ruby-node">&quot;http://twitter.com/#{username.gsub(/@/, &quot;&quot;)}&quot;</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;Error code returned from Twitter - #{rsp.code}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">rsp</span>.<span class="ruby-identifier">code</span> <span class="ruby-operator">!=</span> <span class="ruby-value">200</span>
+  <span class="ruby-identifier">locations</span> = {}
+  <span class="ruby-identifier">cur_page</span> = <span class="ruby-value">1</span>
+  <span class="ruby-identifier">tweets</span> = []
+  <span class="ruby-identifier">tweets_html</span> = <span class="ruby-identifier">rsp</span>.<span class="ruby-identifier">body</span>
+  <span class="ruby-identifier">pagination_html</span> = <span class="ruby-identifier">rsp</span>.<span class="ruby-identifier">body</span>
+
+  <span class="ruby-identifier">main_page</span> = <span class="ruby-constant">Nokogiri</span><span class="ruby-operator">::</span><span class="ruby-constant">HTML</span>(<span class="ruby-identifier">rsp</span>.<span class="ruby-identifier">body</span>)
+  <span class="ruby-identifier">authenticity_token</span> = <span class="ruby-identifier">main_page</span>.<span class="ruby-identifier">css</span>(<span class="ruby-node">&quot;input#authenticity_token&quot;</span>).<span class="ruby-identifier">first</span>[<span class="ruby-value">:value</span>]
+  
+  <span class="ruby-keyword">while</span> <span class="ruby-identifier">rsp</span>.<span class="ruby-identifier">code</span> <span class="ruby-operator">==</span> <span class="ruby-value">200</span>
+    <span class="ruby-identifier">page_body</span> =  <span class="ruby-constant">Nokogiri</span><span class="ruby-operator">::</span><span class="ruby-constant">HTML</span>(<span class="ruby-identifier">tweets_html</span>)
+
+    <span class="ruby-identifier">new_tweets</span> = <span class="ruby-identifier">page_body</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">'li.status'</span>).<span class="ruby-identifier">collect</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tw</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">t</span> = <span class="ruby-constant">Tweet</span>.<span class="ruby-identifier">new</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">tw</span>[<span class="ruby-value">:class</span>] <span class="ruby-operator">=~</span> <span class="ruby-regexp">/.* u\-(.*?) .*/</span>
+        <span class="ruby-identifier">t</span>.<span class="ruby-identifier">author_name</span> = <span class="ruby-node">$1</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">t</span>.<span class="ruby-identifier">text</span> = <span class="ruby-identifier">tw</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&quot;span.entry-content&quot;</span>).<span class="ruby-identifier">text</span>
+      <span class="ruby-comment"># For some reason, time isn't in quotes in the JSON string which causes problems</span>
+      <span class="ruby-identifier">t</span>.<span class="ruby-identifier">time</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">tw</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&quot;span.timestamp&quot;</span>).<span class="ruby-identifier">first</span>[<span class="ruby-value">:data</span>].<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/\{time:'(.*)'\}/</span>)[<span class="ruby-value">1</span>])
+      <span class="ruby-identifier">meta_data_str</span> = <span class="ruby-identifier">tw</span>.<span class="ruby-identifier">css</span>(<span class="ruby-string">&quot;span.entry-meta&quot;</span>).<span class="ruby-identifier">first</span>[<span class="ruby-value">:data</span>]
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">meta_data_str</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">2</span>
+        <span class="ruby-identifier">meta_data</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">meta_data_str</span>)
+        <span class="ruby-identifier">t</span>.<span class="ruby-identifier">author_pic</span> = <span class="ruby-identifier">meta_data</span>[<span class="ruby-string">&quot;avatar_url&quot;</span>]
+        <span class="ruby-identifier">place_id</span> = <span class="ruby-identifier">meta_data</span>[<span class="ruby-string">&quot;place_id&quot;</span>]
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">place_id</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">fetch_location_info</span>
+          <span class="ruby-keyword">if</span> <span class="ruby-identifier">locations</span>[<span class="ruby-identifier">place_id</span>]
+            <span class="ruby-identifier">t</span>.<span class="ruby-identifier">location</span> = <span class="ruby-identifier">locations</span>[<span class="ruby-identifier">place_id</span>]
+          <span class="ruby-keyword">else</span>
+            <span class="ruby-identifier">geo_result</span> = <span class="ruby-constant">HTTParty</span>.<span class="ruby-identifier">get</span>(<span class="ruby-node">&quot;http://twitter.com/1/geo/id/#{place_id}.json?authenticity_token=#{authenticity_token}&amp;twttr=true&quot;</span>)
+            <span class="ruby-keyword">if</span> <span class="ruby-identifier">geo_result</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">geo_result</span>.<span class="ruby-identifier">code</span> <span class="ruby-operator">==</span> <span class="ruby-value">200</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">geo_result</span>.<span class="ruby-identifier">body</span> <span class="ruby-operator">&amp;&amp;</span>
+               <span class="ruby-identifier">geo_result</span>.<span class="ruby-identifier">body</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^\{.*/</span>
+              <span class="ruby-identifier">geo_data</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">geo_result</span>.<span class="ruby-identifier">body</span>)
+              <span class="ruby-keyword">if</span> <span class="ruby-identifier">geo_data</span>[<span class="ruby-string">&quot;geometry&quot;</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">geo_data</span>[<span class="ruby-string">&quot;geometry&quot;</span>][<span class="ruby-string">&quot;coordinates&quot;</span>]
+                <span class="ruby-identifier">loc</span> = <span class="ruby-constant">TweetLocation</span>.<span class="ruby-identifier">new</span>
+                <span class="ruby-identifier">loc</span>.<span class="ruby-identifier">place_name</span> = <span class="ruby-identifier">geo_data</span>[<span class="ruby-string">&quot;name&quot;</span>]
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">geo_data</span>[<span class="ruby-string">&quot;geometry&quot;</span>][<span class="ruby-string">&quot;type&quot;</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;Point&quot;</span>
+                  <span class="ruby-identifier">loc</span>.<span class="ruby-identifier">center</span> = <span class="ruby-identifier">geo_data</span>[<span class="ruby-string">&quot;geometry&quot;</span>][<span class="ruby-string">&quot;coordinates&quot;</span>]
+                <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">geo_data</span>[<span class="ruby-string">&quot;geometry&quot;</span>][<span class="ruby-string">&quot;type&quot;</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;Polygon&quot;</span>
+                  <span class="ruby-identifier">loc</span>.<span class="ruby-identifier">bounding_box</span> = <span class="ruby-identifier">geo_data</span>[<span class="ruby-string">&quot;geometry&quot;</span>][<span class="ruby-string">&quot;coordinates&quot;</span>].<span class="ruby-identifier">first</span>
+                  <span class="ruby-identifier">ll_sums</span> = <span class="ruby-identifier">loc</span>.<span class="ruby-identifier">bounding_box</span>.<span class="ruby-identifier">inject</span>([<span class="ruby-value">0</span>,<span class="ruby-value">0</span>]) {<span class="ruby-operator">|</span><span class="ruby-identifier">sum</span>, <span class="ruby-identifier">p</span><span class="ruby-operator">|</span> [<span class="ruby-identifier">sum</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">p</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">sum</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">p</span>[<span class="ruby-value">1</span>]]}
+                  <span class="ruby-identifier">loc</span>.<span class="ruby-identifier">center</span> = [<span class="ruby-identifier">ll_sums</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">/</span> <span class="ruby-identifier">loc</span>.<span class="ruby-identifier">bounding_box</span>.<span class="ruby-identifier">length</span>, <span class="ruby-identifier">ll_sums</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">/</span> <span class="ruby-identifier">loc</span>.<span class="ruby-identifier">bounding_box</span>.<span class="ruby-identifier">length</span>]
+                <span class="ruby-keyword">end</span>
+                <span class="ruby-identifier">t</span>.<span class="ruby-identifier">location</span> = <span class="ruby-identifier">loc</span>
+                <span class="ruby-identifier">locations</span>[<span class="ruby-identifier">place_id</span>] = <span class="ruby-identifier">loc</span>
+              <span class="ruby-keyword">end</span>
+            <span class="ruby-keyword">end</span>
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">t</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">tweets</span> = <span class="ruby-identifier">tweets</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-identifier">new_tweets</span>)
+    <span class="ruby-identifier">cur_page</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">new_tweets</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TWEETS_PER_PAGE</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">cur_page</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-identifier">number_of_pages</span>
+      <span class="ruby-identifier">pagination</span> = <span class="ruby-constant">Nokogiri</span><span class="ruby-operator">::</span><span class="ruby-constant">HTML</span>(<span class="ruby-identifier">pagination_html</span>)
+      <span class="ruby-identifier">next_link</span> = <span class="ruby-identifier">pagination</span>.<span class="ruby-identifier">css</span>(<span class="ruby-node">&quot;a#more&quot;</span>).<span class="ruby-identifier">first</span>[<span class="ruby-value">:href</span>]
+      <span class="ruby-keyword">unless</span> <span class="ruby-identifier">next_link</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-string">&quot;authenticity_token=&quot;</span>)
+        <span class="ruby-identifier">next_link</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;&amp;authenticity_token=#{authenticity_token}&quot;</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">rsp</span> = <span class="ruby-constant">HTTParty</span>.<span class="ruby-identifier">get</span>(<span class="ruby-node">&quot;http://twitter.com/#{next_link}&quot;</span>)
+      <span class="ruby-identifier">pagination_html</span> = <span class="ruby-identifier">rsp</span>.<span class="ruby-identifier">body</span>
+      <span class="ruby-identifier">tweets_html</span> = <span class="ruby-identifier">rsp</span>.<span class="ruby-identifier">body</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-keyword">break</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">tweets</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- from_user-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- from_user-method -->
+
+      
+        <div id="search_term-method" class="method-detail ">
+          <a name="method-c-search_term"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">search_term</span><span
+              class="method-args">(search_term, number_of_pages=1)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Returns the most recent tweets that contain the search term passed in.  An
+array of <a href="Tweet.html">Tweet</a> objects is returned.</p>
+<ul><li>
+<p><a href="TwitterScour.html#method-c-search_term">search_term</a> - The term
+to search for.  For a hashtag search, just pass in the whole search
+including the hash symbol.</p>
+</li><li>
+<p>number_of_pages - By default, only up to 15 tweets (first page) will be
+returned.  Specify more than one page here if you want more than 15.  Note
+that each page is a separate HTTP request, so the higher the number of
+pages, the longer the operation will take.</p>
+</li></ul>
+
+<p>Note that tweets from a search will not have a full location. If a location
+was attached, the center coordinates will be returned but no name or
+polygon</p>
+            
+
+            
+            <div class="method-source-code" id="search_term-source">
+<pre>
+<span class="ruby-comment"># File lib/twitterscour.rb, line 110</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">search_term</span>(<span class="ruby-identifier">search_term</span>, <span class="ruby-identifier">number_of_pages</span>=<span class="ruby-value">1</span>)
+  <span class="ruby-identifier">term</span> = <span class="ruby-constant">CGI</span>.<span class="ruby-identifier">escape</span>(<span class="ruby-identifier">search_term</span>)
+  <span class="ruby-identifier">url_base</span> = <span class="ruby-string">&quot;http://search.twitter.com/search.json&quot;</span>
+  <span class="ruby-identifier">url</span> = <span class="ruby-identifier">url_base</span> <span class="ruby-operator">+</span> <span class="ruby-node">&quot;?q=#{CGI.escape(search_term)}&quot;</span>
+  <span class="ruby-identifier">rsp</span> = <span class="ruby-constant">HTTParty</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">url</span>, <span class="ruby-value">:format</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:json</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;Rate limit exceeded, slow down&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">rsp</span>.<span class="ruby-identifier">code</span> <span class="ruby-operator">==</span> <span class="ruby-value">420</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;Error code returned from Twitter - #{rsp.code}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">rsp</span>.<span class="ruby-identifier">code</span> <span class="ruby-operator">!=</span> <span class="ruby-value">200</span>
+  <span class="ruby-identifier">cur_page</span> = <span class="ruby-value">1</span>
+  <span class="ruby-identifier">tweets</span> = []
+  <span class="ruby-identifier">tweets_html</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-identifier">results_per_page</span> = <span class="ruby-value">15</span>
+
+  <span class="ruby-keyword">while</span> <span class="ruby-identifier">rsp</span>.<span class="ruby-identifier">code</span> <span class="ruby-operator">==</span> <span class="ruby-value">200</span>
+    <span class="ruby-identifier">obj</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">rsp</span>.<span class="ruby-identifier">body</span>)
+    <span class="ruby-keyword">if</span> (<span class="ruby-identifier">obj</span>[<span class="ruby-string">&quot;error&quot;</span>])
+      <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;Got error from Twitter - &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">obj</span>[<span class="ruby-string">&quot;error&quot;</span>])
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">obj</span>[<span class="ruby-string">&quot;results_per_page&quot;</span>]
+      <span class="ruby-identifier">results_per_page</span> = <span class="ruby-identifier">obj</span>[<span class="ruby-string">&quot;results_per_page&quot;</span>]
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">new_tweets</span> = []
+    <span class="ruby-identifier">obj</span>[<span class="ruby-string">&quot;results&quot;</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">o</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">t</span> = <span class="ruby-constant">Tweet</span>.<span class="ruby-identifier">new</span>
+      <span class="ruby-identifier">t</span>.<span class="ruby-identifier">author_name</span> = <span class="ruby-identifier">o</span>[<span class="ruby-string">&quot;from_user&quot;</span>]
+      <span class="ruby-identifier">t</span>.<span class="ruby-identifier">author_pic</span> = <span class="ruby-identifier">o</span>[<span class="ruby-string">&quot;profile_image_url&quot;</span>]
+      <span class="ruby-identifier">t</span>.<span class="ruby-identifier">time</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">o</span>[<span class="ruby-string">&quot;created_at&quot;</span>])
+      <span class="ruby-identifier">t</span>.<span class="ruby-identifier">text</span> = <span class="ruby-identifier">o</span>[<span class="ruby-string">&quot;text&quot;</span>]
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">o</span>[<span class="ruby-string">&quot;geo&quot;</span>]
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">o</span>[<span class="ruby-string">&quot;geo&quot;</span>][<span class="ruby-string">&quot;type&quot;</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;Point&quot;</span>
+          <span class="ruby-identifier">loc</span> = <span class="ruby-constant">TweetLocation</span>.<span class="ruby-identifier">new</span>
+          <span class="ruby-identifier">loc</span>.<span class="ruby-identifier">center</span> = [<span class="ruby-identifier">o</span>[<span class="ruby-string">&quot;geo&quot;</span>][<span class="ruby-string">&quot;coordinates&quot;</span>][<span class="ruby-value">1</span>], <span class="ruby-identifier">o</span>[<span class="ruby-string">&quot;geo&quot;</span>][<span class="ruby-string">&quot;coordinates&quot;</span>][<span class="ruby-value">0</span>]]
+          <span class="ruby-identifier">t</span>.<span class="ruby-identifier">location</span> = <span class="ruby-identifier">loc</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">new_tweets</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">t</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">tweets</span> = <span class="ruby-identifier">tweets</span>.<span class="ruby-identifier">concat</span>(<span class="ruby-identifier">new_tweets</span>)
+    <span class="ruby-identifier">cur_page</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">new_tweets</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">results_per_page</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">cur_page</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-identifier">number_of_pages</span>
+      <span class="ruby-identifier">url</span> = <span class="ruby-identifier">url_base</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">obj</span>[<span class="ruby-string">&quot;next_page&quot;</span>]
+      <span class="ruby-identifier">rsp</span> = <span class="ruby-constant">HTTParty</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">url</span>, <span class="ruby-value">:format</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:json</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-keyword">break</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">tweets</span>
+
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- search_term-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- search_term-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

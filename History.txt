@@ -1,3 +1,6 @@
+=== 0.2.0 / 2011-07-28
+* Search term tweets broke a few days ago, fixed this by using the Twitter API. This results in faster searches, and the location is now included for search term searches
+
 === 0.1.2 / 2011-02-06
 * Fixed bug with the term search, at some point in the past month this broke
 

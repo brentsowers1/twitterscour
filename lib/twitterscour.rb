@@ -5,6 +5,7 @@ require File.dirname(__FILE__) + "/tweet"
 require File.dirname(__FILE__) + "/tweet_location"
 require 'json'
 require 'cgi'
+require 'time'
 
 # Fetches Tweet objects from twitter.com based on the parameters that you
 # specify for your search
@@ -99,58 +100,54 @@ class TwitterScour
   # array of Tweet objects is returned.
   # - search_term - The term to search for.  For a hashtag search, just pass
   #   in the whole search including the hash symbol.
-  # - number_of_pages - By default, only up to 20 tweets (first page) will be
-  #   returned.  Specify more than one page here if you want more than 20.  Note
+  # - number_of_pages - By default, only up to 15 tweets (first page) will be
+  #   returned.  Specify more than one page here if you want more than 15.  Note
   #   that each page is a separate HTTP request, so the higher the number of
   #   pages, the longer the operation will take.
-  # Note that tweets from a search will NOT have location info.  The only way
-  # to get this is to do a from user search.
+  # Note that tweets from a search will not have a full location. If a location
+  # was attached, the center coordinates will be returned but no name or
+  # polygon
   def self.search_term(search_term, number_of_pages=1)
     term = CGI.escape(search_term)
-    search_url = "http://search.twitter.com/search?_=#{Time.now.utc.to_i}000&q=#{term}&rpp=20&maxId=null&locale=en&callback=processHomepageSearch&layout=none"
-    rsp = HTTParty.get(search_url, :format => :html)
+    url_base = "http://search.twitter.com/search.json"
+    url = url_base + "?q=#{CGI.escape(search_term)}"
+    rsp = HTTParty.get(url, :format => :json)
+    raise Exception.new("Rate limit exceeded, slow down") if rsp.code == 420
     raise Exception.new("Error code returned from Twitter - #{rsp.code}") if rsp.code != 200
     cur_page = 1
     tweets = []
     tweets_html = ""
+    results_per_page = 15
 
     while rsp.code == 200
-      if rsp.body =~ /^processHomepageSearch\("(.*)"\)$/
-        tweets_html = $1
-        # These escape sequences are used because Javascript is sent back, we
-        # want to interpret it as HTML so get rid of them
-        tweets_html.gsub!(/\\"/, "\"")
-        tweets_html.gsub!(/\\t/, "")
-        tweets_html.gsub!(/\\r/, "")
-        tweets_html.gsub!(/\\n/, "")
-      else
-        raise Exception.new("Search results did not meet the expected format - #{rsp.body}")
+      obj = JSON.parse(rsp.body)
+      if (obj["error"])
+        raise Exception.new("Got error from Twitter - " + obj["error"])
       end
-
-      page_body =  Nokogiri::HTML(tweets_html)
-      new_tweets = page_body.css('li.result').collect do |tw|
+      if obj["results_per_page"]
+        results_per_page = obj["results_per_page"]
+      end
+      new_tweets = []
+      obj["results"].each do |o|
         t = Tweet.new
-        t.author_name = tw.css("a.username").first.text
-        t.author_pic = tw.css("div.avatar img").first[:src]
-        t.text = tw.css("span.msgtxt").text
-        time_text = tw.css("div.info").text
-        if time_text =~ /(about )?(\d+) (minute(s?)|hour(s?)|day(s?)) ago/
-          num = $2.to_i
-          if $3.include?("hour")
-            num *= 60
-          elsif $3.include?("day")
-            num *= 1440
+        t.author_name = o["from_user"]
+        t.author_pic = o["profile_image_url"]
+        t.time = Time.parse(o["created_at"])
+        t.text = o["text"]
+        if o["geo"]
+          if o["geo"]["type"] == "Point"
+            loc = TweetLocation.new
+            loc.center = [o["geo"]["coordinates"][1], o["geo"]["coordinates"][0]]
+            t.location = loc
           end
-          num *= 60  # 60 seconds in a minute
-          t.time = Time.now - num
         end
-        t
+        new_tweets << t
       end
       tweets = tweets.concat(new_tweets)
       cur_page += 1
-      if new_tweets.length == TWEETS_PER_PAGE && cur_page <= number_of_pages
-        url = search_url + "&page=#{cur_page}"
-        rsp = HTTParty.get(url, :format => :html)
+      if new_tweets.length == results_per_page && cur_page <= number_of_pages
+        url = url_base + obj["next_page"]
+        rsp = HTTParty.get(url, :format => :json)
       else
         break
       end
