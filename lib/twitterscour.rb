@@ -24,7 +24,7 @@ class TwitterScour
   #   because to retrieve location info takes another HTTP request which can
   #   slow things down.  If you want location set this to true
   def self.from_user(username, number_of_pages=1, fetch_location_info=false)
-    rsp = HTTParty.get("http://twitter.com/#{username.gsub(/@/, "")}")
+    rsp = HTTParty.get("http://mobile.twitter.com/#{username.gsub(/@/, "")}")
     raise Exception.new("Error code returned from Twitter - #{rsp.code}") if rsp.code != 200
     locations = {}
     cur_page = 1
@@ -37,53 +37,49 @@ class TwitterScour
     while rsp.code == 200
       page_body =  Nokogiri::HTML(tweets_html)
 
-      new_tweets = page_body.css('div.tweet').collect do |tw|
+      new_tweets = page_body.css('div.list-tweet').collect do |tw|
         t = Tweet.new
-        t.author_name = tw[:"data-screen-name"]
-        t.text = tw.css("div.tweet-text").text
+        links = tw.css("a")
+        t.author_name = links[0].text
+        t.text = tw.css("span.status").text
         # For some reason, time isn't in quotes in the JSON string which causes problems
-        t.time = Time.parse(tw.css("span.js-tweet-timestamp")[0][:"data-time"])
-        #meta_data_str = tw.css("span.entry-meta").first[:data]
-        #if meta_data_str.length > 2
-        #  meta_data = JSON.parse(meta_data_str)
-        #  t.author_pic = meta_data["avatar_url"]
-        #  place_id = meta_data["place_id"]
-        #  if place_id && fetch_location_info
-        #    if locations[place_id]
-        #      t.location = locations[place_id]
-        #    else
-        #      geo_result = HTTParty.get("http://twitter.com/1/geo/id/#{place_id}.json?authenticity_token=#{authenticity_token}&twttr=true")
-        #      if geo_result && geo_result.code == 200 && geo_result.body &&
-        #         geo_result.body =~ /^\{.*/
-        #        geo_data = JSON.parse(geo_result.body)
-        #        if geo_data["geometry"] && geo_data["geometry"]["coordinates"]
-        #          loc = TweetLocation.new
-        #          loc.place_name = geo_data["name"]
-        #          if geo_data["geometry"]["type"] == "Point"
-        #            loc.center = geo_data["geometry"]["coordinates"]
-        #          elsif geo_data["geometry"]["type"] == "Polygon"
-        #            loc.bounding_box = geo_data["geometry"]["coordinates"].first
-        #            ll_sums = loc.bounding_box.inject([0,0]) {|sum, p| [sum[0] + p[0], sum[1] + p[1]]}
-        #            loc.center = [ll_sums[0] / loc.bounding_box.length, ll_sums[1] / loc.bounding_box.length]
-        #          end
-        #          t.location = loc
-        #          locations[place_id] = loc
-        #        end
-        #      end
-        #    end
-        #  end
-        #end
+        #t.time = Time.parse(tw.css("span.js-tweet-timestamp")[0][:"data-time"])
+        time_text = tw.css("a.status_link").text
+        if time_text =~ /(about )?(\d+) (minute(s?)|hour(s?)|day(s?)) ago.*/
+          num = $2.to_i
+          if $3.include?("hour")
+            num *= 60
+          elsif $3.include?("day")
+            num *= 1440
+          end
+          num *= 60  # 60 seconds in a minute
+          t.time = Time.now - num
+        end
+        if fetch_location_info && tw.css("img.geo-icon").length > 0
+          link = tw.css("a.status_link")[0][:href]
+          detailed_result = HTTParty.get("http://mobile.twitter.com#{link}")
+          if detailed_result && detailed_result.code == 200 && detailed_result.body
+            page = Nokogiri::HTML(detailed_result.body)
+            tweet = page.css("div#tweets-list")[0]
+            imgs = tweet.css("img")
+            map = imgs.find {|i| i[:src] =~ /maps\.google\.com/}
+            if map
+              if map[:src] =~ /.*\|(\-?\d+\.?\d*),(\-?\d+\.?\d*).*/
+                loc = TweetLocation.new
+                loc.center = [$2.to_f, $1.to_f]
+                t.location = loc
+              end
+            end
+          end
+        end
         t
       end
       tweets = tweets.concat(new_tweets)
       cur_page += 1
       if new_tweets.length == TWEETS_PER_PAGE && cur_page <= number_of_pages
         pagination = Nokogiri::HTML(pagination_html)
-        next_link = pagination.css("a#more").first[:href]
-        unless next_link.include?("authenticity_token=")
-          next_link << "&authenticity_token=#{authenticity_token}"
-        end
-        rsp = HTTParty.get("http://twitter.com/#{next_link}")
+        next_link = pagination.css("a#more_link").first[:href]
+        rsp = HTTParty.get("http://mobile.twitter.com/#{next_link}")
         pagination_html = rsp.body
         tweets_html = rsp.body
       else
