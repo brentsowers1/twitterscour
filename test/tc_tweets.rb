@@ -44,6 +44,7 @@ class TwitterScourTest < Test::Unit::TestCase #:nodoc: all
     [tweets[1], tweets[21]].each do |t|
       assert_equal "Got something working this AM that I spent all afternoon yesterday trying to figure out, and I didn't change anything...", t.text
       assert_equal "sowersb", t.author_name
+      assert_equal "http://a0.twimg.com/profile_images/1420695224/Snapshot_of_me_1_normal.jpg", t.author_pic
       assert(t.time >= Time.now - 86401 && t.time <= Time.now - 86399, "Now = #{Time.now - 86400}, t time = #{t.time}")
       assert_nil t.location
     end

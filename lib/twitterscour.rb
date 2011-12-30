@@ -24,7 +24,8 @@ class TwitterScour
   #   because to retrieve location info takes another HTTP request which can
   #   slow things down.  If you want location set this to true
   def self.from_user(username, number_of_pages=1, fetch_location_info=false)
-    rsp = HTTParty.get("http://mobile.twitter.com/#{username.gsub(/@/, "")}")
+    http_options = {:headers => {"User-Agent" => "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.24) Gecko/20111107 Ubuntu/10.04 (lucid) Firefox/3.6.24"}}
+    rsp = HTTParty.get("http://mobile.twitter.com/#{username.gsub(/@/, "")}", http_options)
     raise Exception.new("Error code returned from Twitter - #{rsp.code}") if rsp.code != 200
     locations = {}
     cur_page = 1
@@ -42,6 +43,8 @@ class TwitterScour
         links = tw.css("strong a")
         t.author_name = links[0].text
         t.text = tw.css("span.status").text
+        imgs = tw.css("img.list-tweet-img")
+        t.author_pic = imgs[0][:src]
         # For some reason, time isn't in quotes in the JSON string which causes problems
         #t.time = Time.parse(tw.css("span.js-tweet-timestamp")[0][:"data-time"])
         time_text = tw.css("a.status_link").text
@@ -79,7 +82,7 @@ class TwitterScour
       if new_tweets.length == TWEETS_PER_PAGE && cur_page <= number_of_pages
         pagination = Nokogiri::HTML(pagination_html)
         next_link = pagination.css("a#more_link").first[:href]
-        rsp = HTTParty.get("http://mobile.twitter.com/#{next_link}")
+        rsp = HTTParty.get("http://mobile.twitter.com/#{next_link}", http_options)
         pagination_html = rsp.body
         tweets_html = rsp.body
       else
