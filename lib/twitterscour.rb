@@ -39,7 +39,7 @@ class TwitterScour
 
       new_tweets = page_body.css('div.list-tweet').collect do |tw|
         t = Tweet.new
-        links = tw.css("a")
+        links = tw.css("strong a")
         t.author_name = links[0].text
         t.text = tw.css("span.status").text
         # For some reason, time isn't in quotes in the JSON string which causes problems

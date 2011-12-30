@@ -42,10 +42,9 @@ class TwitterScourTest < Test::Unit::TestCase #:nodoc: all
     assert_not_nil tweets
     assert_equal 40, tweets.length
     [tweets[1], tweets[21]].each do |t|
-      assert_equal "Yeah #Giants!  Good pitching always beats good hitting.  Finally a team I like wins the world series, first time since the 05 White Sox", t.text
+      assert_equal "Got something working this AM that I spent all afternoon yesterday trying to figure out, and I didn't change anything...", t.text
       assert_equal "sowersb", t.author_name
-      assert_equal "http://a3.twimg.com/profile_images/1084691799/Brent-sm_mini.jpg", t.author_pic
-      assert_equal Time.gm(2010,11,2,2,34,3).getlocal, t.time
+      assert(t.time >= Time.now - 86401 && t.time <= Time.now - 86399, "Now = #{Time.now - 86400}, t time = #{t.time}")
       assert_nil t.location
     end
   end
