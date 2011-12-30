@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name        = 'twitterscour'
-  spec.version     = '0.2.0'
+  spec.version     = '0.2.1'
   spec.files       = Dir['twitterscour.rb', 'lib/**/*', 'test/**/*', 'example/**/*' 'README', 'History.txt']
   spec.test_files  = Dir.glob('test/tc_*.rb')
 
